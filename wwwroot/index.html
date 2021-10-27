@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>SVGIconColoring</title>
+    <base href="/" />
+    <link href="css/bootstrap/bootstrap.min.css" rel="stylesheet" />
+    <link href="css/app.css" rel="stylesheet" />
+    <link href="SVGIconColoring.styles.css" rel="stylesheet" />
+    <script>
+        window.SetSignInText = () =>{
+            var res = prompt("ログイン名を入力してください");
+            if(res == null){
+                res="<span style='color:#ff0000'>SignIn</span>";
+            }
+            else{
+                currentUser.id=res;
+            }
+            return res;
+        }
+        var currentUser = {imgXML:"",color:"",imgURL:"",id:""};
+        function selectImg(img){
+            currentUser.imgURL=img.id;
+            while(document.getElementById("selectedImage").children.length > 0){
+                document.getElementById("selectedImage").removeChild(document.getElementById("selectedImage").firstChild);
+            }
+            var container = document.createElement("div");
+            container.style.display = "inline-block";
+            var ctl = document.createElement("div");
+            ctl.innerHTML = "&#10000;";
+            container.appendChild(ctl.cloneNode(true));
+            container.lastChild.style="color:#ff0000;font-size:5rem;";
+            container.lastChild.setAttribute('onclick','setColor(this);');
+            container.appendChild(ctl.cloneNode(true));
+            container.lastChild.style="color:#00ff00;font-size:5rem;";
+            container.lastChild.setAttribute('onclick','setColor(this);');
+            container.appendChild(ctl.cloneNode(true));
+            container.lastChild.style="color:#0000ff;font-size:5rem;";
+            container.lastChild.setAttribute('onclick','setColor(this);');
+            document.getElementById("selectedImage").appendChild(container);
+            document.getElementById("selectedImage").appendChild(img.cloneNode(true));
+            document.getElementById("selectedImage").lastChild.id="currentImg";
+            document.getElementById("selectedImage").lastChild.style="width:200px;vertical-align:top;margin-top:3rem;margin-left:3rem;";
+        }
+        function setColor(pen){
+            var dataType = "data:image/svg+xml;utf8,";
+            currentUser.color=pen.style.color;
+            currentUser.imgXML = document.getElementById("currentImg").getAttribute("src").replace(dataType,"");
+            var dom_parser = new DOMParser();
+            var document_obj = dom_parser.parseFromString(currentUser.imgXML, "text/xml");
+            document_obj.rootElement.getElementsByTagName("g")[0].setAttribute('style','fill:' + pen.style.color);
+            document.getElementById("currentImg").setAttribute("src",dataType + document_obj.rootElement.outerHTML);
+        }
+</script>
+</head>
+
+<body>
+    <div id="app">Loading...</div>
+
+    <div id="blazor-error-ui">
+        An unhandled error has occurred.
+        <a href="" class="reload">Reload</a>
+        <a class="dismiss">🗙</a>
+    </div>
+    <script src="_framework/blazor.webassembly.js"></script>
+</body>
+
+</html>
