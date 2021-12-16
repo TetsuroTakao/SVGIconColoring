@@ -18,15 +18,18 @@ else
     }
 }
 <div id="selectedImage" style="width:100%;text-align:center;border:4px dotted #0000ff;border-radius:10px; margin-top:2rem;"></div>
-<div id="message"></div>
+<div id="message">@currentXML</div>
 @code {
     private List<SVGIcon> SVGs = new List<SVGIcon>();
     private MarkupString? currentXML {get; set; }
     protected override async Task OnInitializedAsync()
     {
         HttpClient httpClient = new HttpClient();
+        currentXML = (MarkupString)message;
         for(var i = 155117; i < 155127; i++){
             Uri requestURL = new Uri("https://cdn.onlinewebfonts.com/svg/download_"+ i.ToString() + ".svg");
+            @* Uri requestURL = new Uri("https://cdn.onlinewebfonts.com/svg/download_"+ i.ToString() + ".svg"); *@
+            Uri requestURL = new Uri("http://cdn.onlinewebfonts.com/svg/download_"+ i.ToString() + ".svg");
             var res = await httpClient.GetStringAsync(requestURL);
             if (string.IsNullOrEmpty(res))
             {
