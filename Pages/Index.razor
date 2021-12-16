@@ -25,9 +25,9 @@ else
     protected override async Task OnInitializedAsync()
     {
         HttpClient httpClient = new HttpClient();
+        var message = string.Empty;
         currentXML = (MarkupString)message;
         for(var i = 155117; i < 155127; i++){
-            Uri requestURL = new Uri("https://cdn.onlinewebfonts.com/svg/download_"+ i.ToString() + ".svg");
             @* Uri requestURL = new Uri("https://cdn.onlinewebfonts.com/svg/download_"+ i.ToString() + ".svg"); *@
             Uri requestURL = new Uri("http://cdn.onlinewebfonts.com/svg/download_"+ i.ToString() + ".svg");
             var res = await httpClient.GetStringAsync(requestURL);
